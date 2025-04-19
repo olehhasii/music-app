@@ -3,37 +3,16 @@ import { getAllTracks } from '../../api/tracks';
 import { PaginationMeta, Track } from '../../types';
 import TrackItem from './TrackItem';
 
-export default function TrackList() {
-  const [tracks, setTracks] = useState<Track[]>([]);
-  const [paginationMetaData, setPaginationMetaData] = useState<PaginationMeta>();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchAllTracks = async () => {
-      try {
-        const { data, meta } = await getAllTracks();
-        setTracks(data);
-        setPaginationMetaData(meta);
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAllTracks();
-  }, []);
-
+export default function TrackList({ isLoading, tracks }: { isLoading: boolean; tracks: Track[] }) {
   if (isLoading) {
     return <div>Loading</div>;
   }
 
   return (
-    <div className="glass px-4 py-2">
-      <ul>
+    <div className="glass scrollable-glass max-h-[65vh] w-full overflow-y-auto px-4 py-2">
+      <ul className="flex flex-col gap-4">
         {tracks.map((trackItem) => {
-          return <TrackItem track={trackItem} />;
+          return <TrackItem key={trackItem.id} track={trackItem} />;
         })}
       </ul>
     </div>
