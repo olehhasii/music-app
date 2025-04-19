@@ -1,10 +1,12 @@
 import './App.css';
-import TrackList from './components/TrackList';
+import Header from './components/Header';
+import TracksSection from './components/Tracks/TracksSection';
 
 function App() {
   return (
     <>
-      <TrackList />
+      <Header />
+      <TracksSection />
     </>
   );
 }
