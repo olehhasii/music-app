@@ -2,6 +2,8 @@ import { FieldValues, useForm } from 'react-hook-form';
 import InputForm from './InputForm';
 
 import SelectGenres from './SelectGenres';
+import { useEffect, useState } from 'react';
+import { getTrackBySlug } from '../../api/tracks';
 
 export default function TrackForm({
   onClose,
@@ -12,6 +14,8 @@ export default function TrackForm({
   isLoadingToServer,
   selectedGenres,
   imgSrc,
+  isEditing,
+  slug,
 }: {
   onClose: () => void;
   onSubmit: (data: FieldValues) => void;
@@ -21,12 +25,43 @@ export default function TrackForm({
   selectedGenres: string[];
   genresError: string;
   imgSrc: string;
+  isEditing: boolean;
+  slug?: string;
 }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isEditing && slug) {
+      const getPreffiledData = async () => {
+        try {
+          setIsLoading(true);
+          const preffiledData = await getTrackBySlug(slug);
+          setValue('title', preffiledData.title);
+          setValue('artist', preffiledData.artist);
+          setValue('album', preffiledData.album);
+          setValue('coverImage', preffiledData.coverImage);
+          onSetSelectedGenres(preffiledData.genres);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      getPreffiledData();
+    }
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
 
   return (
     <form

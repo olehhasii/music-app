@@ -71,6 +71,7 @@ export default function TracksActions() {
               selectedGenres={selectedGenres}
               genresError={genresError}
               imgSrc="/assets/form-createTrack.png"
+              isEditing={false}
             />
           </Modal>,
           document.body

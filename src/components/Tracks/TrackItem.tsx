@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Track } from '../../types';
+import { Track, TrackFormData } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 import { createPortal } from 'react-dom';
 import Modal from '../Modal/Modal';
 import TrackForm from '../Forms/TrackForm';
 import { FieldValues } from 'react-hook-form';
+import { deleteTrack, updateTrack } from '../../api/tracks';
+import { useTracksStore } from '../../store/TracksStore';
+import { useToastStore } from '../../store/ToastStore';
 
 export default function TrackItem({ track }: { track: Track }) {
   const { id, title, artist, album, genres, slug, coverImage, audioFile, createdAt, updatedAt } =
@@ -15,12 +18,54 @@ export default function TrackItem({ track }: { track: Track }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoadingToServer, setIsLoadingToServer] = useState(false);
 
+  const { fetchTracks } = useTracksStore();
+  const { openToast, setToastMessage } = useToastStore();
+
+  const handleOpenEdit = () => {
+    setIsEditing(true);
+  };
+
   const handleCloseEdit = () => {
     setSelectedGenres([]);
     setIsEditing(false);
   };
 
-  const onEditTrack = async (data: FieldValues) => {};
+  const handleDeleteTrack = async () => {
+    try {
+      await deleteTrack(id);
+      setToastMessage('Track deleted!', false);
+      fetchTracks();
+    } catch (error) {
+      setToastMessage('Error, please try again', true);
+    } finally {
+      openToast();
+    }
+  };
+
+  const onEditTrack = async (data: FieldValues) => {
+    setGenresError('');
+    if (selectedGenres.length === 0) {
+      setGenresError('Please select atleas 1 genre');
+      return;
+    }
+    try {
+      setIsLoadingToServer(true);
+      const fullData = { ...data, genres: selectedGenres };
+      await updateTrack(id, fullData as TrackFormData);
+      setToastMessage('Track updated!', false);
+      fetchTracks();
+    } catch (err: any) {
+      if (err.response.status === 409) {
+        setToastMessage('409 error', true);
+      } else {
+        setToastMessage('Track wasnt updated, please try again', true);
+      }
+    } finally {
+      setIsLoadingToServer(false);
+      //handleCloseEdit();
+      openToast();
+    }
+  };
 
   return (
     <>
@@ -58,14 +103,17 @@ export default function TrackItem({ track }: { track: Track }) {
         <div className="flex gap-2">
           <button
             className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1"
-            onClick={() => setIsEditing(true)}
+            onClick={handleOpenEdit}
           >
             <img src="/assets/edit.svg" className="" />
           </button>
           <button className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1">
             <img src="/assets/upload.svg" />
           </button>
-          <button className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 p-2">
+          <button
+            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 p-2"
+            onClick={handleDeleteTrack}
+          >
             <img src="/assets/delete.svg" />
           </button>
         </div>
@@ -82,6 +130,8 @@ export default function TrackItem({ track }: { track: Track }) {
               isLoadingToServer={isLoadingToServer}
               onSubmit={onEditTrack}
               imgSrc="/assets/editBg.png"
+              isEditing={true}
+              slug={slug}
             />
           </Modal>,
           document.body
