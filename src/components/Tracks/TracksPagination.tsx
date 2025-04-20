@@ -14,13 +14,16 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
       </button>
       <div className="glass flex min-w-[500px] items-center justify-center gap-8 px-4 py-2">
         {pagesCount.map((num) => {
+          const isActive = activePage === num;
+
           return (
-            <span
+            <button
               key={uuidv4()}
-              className={`${activePage === num ? 'bg-[#e4e3de] text-black' : ''} flex h-4 w-4 items-center justify-center rounded-full p-5 text-xl`}
+              className={`${isActive ? 'bg-[#e4e3de] text-black' : ''} flex h-4 w-4 cursor-pointer items-center justify-center rounded-full p-5 text-xl`}
+              disabled={isActive}
             >
               {num}
-            </span>
+            </button>
           );
         })}
       </div>

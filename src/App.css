@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 #root {
-  padding: 30px 30px;
+  padding: 15px 30px;
 }
 
 .glass {
@@ -60,4 +60,11 @@
 
 .scrollable-glass::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
+}
+
+.scrollable-form {
+  overflow-y: auto;
+  padding-right: 0px;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }

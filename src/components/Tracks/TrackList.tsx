@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import { getAllTracks } from '../../api/tracks';
-import { PaginationMeta, Track } from '../../types';
+import { Track } from '../../types';
 import TrackItem from './TrackItem';
 
 export default function TrackList({ isLoading, tracks }: { isLoading: boolean; tracks: Track[] }) {

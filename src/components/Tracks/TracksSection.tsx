@@ -3,6 +3,7 @@ import TrackList from './TrackList';
 import TracksPagination from './TracksPagination';
 import { PaginationMeta, Track } from '../../types';
 import { getAllTracks } from '../../api/tracks';
+import TracksActions from './TracksActions';
 
 export default function TracksSection() {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -15,7 +16,6 @@ export default function TracksSection() {
         const { data, meta } = await getAllTracks();
         setTracks(data);
         setPaginationMetaData(meta);
-        console.log(data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -28,6 +28,7 @@ export default function TracksSection() {
 
   return (
     <section className="mt-6 flex flex-col items-center">
+      <TracksActions />
       <TrackList tracks={tracks} isLoading={isLoading} />
       {paginationMetaData && <TracksPagination metaData={paginationMetaData} />}
     </section>

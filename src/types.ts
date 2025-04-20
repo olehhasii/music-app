@@ -22,3 +22,11 @@ export type AllTrackResponse = {
   data: Track[];
   meta: PaginationMeta;
 };
+
+export type TrackFormData = {
+  title: string;
+  artist: string;
+  album: string;
+  coverImage: string;
+  genres?: string[];
+};
