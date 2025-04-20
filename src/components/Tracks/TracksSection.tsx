@@ -1,30 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import TrackList from './TrackList';
 import TracksPagination from './TracksPagination';
-import { PaginationMeta, Track } from '../../types';
-import { getAllTracks } from '../../api/tracks';
+
 import TracksActions from './TracksActions';
+import { useTracksStore } from '../../store/TracksStore';
 
 export default function TracksSection() {
-  const [tracks, setTracks] = useState<Track[]>([]);
-  const [paginationMetaData, setPaginationMetaData] = useState<PaginationMeta>();
-  const [isLoading, setIsLoading] = useState(true);
+  //const [tracks, setTracks] = useState<Track[]>([]);
+  //const [paginationMetaData, setPaginationMetaData] = useState<PaginationMeta>();
+  //const [isLoading, setIsLoading] = useState(true);
+
+  const { tracks, paginationMetaData, isLoading, fetchTracks } = useTracksStore();
 
   useEffect(() => {
-    const fetchAllTracks = async () => {
-      try {
-        const { data, meta } = await getAllTracks();
-        setTracks(data);
-        setPaginationMetaData(meta);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAllTracks();
-  }, []);
+    fetchTracks();
+  }, [fetchTracks]);
 
   return (
     <section className="mt-6 flex flex-col items-center">

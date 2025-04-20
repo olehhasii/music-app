@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { CREATE_TRACK_URL, GET_GENRES_URL, GET_TRACKS_URL } from './config';
-import { AllTrackResponse, Track, TrackFormData } from '../types';
+import { AllTrackResponse, TrackFormData } from '../types';
 
 export const getAllTracks = async (): Promise<AllTrackResponse> => {
   const response = await axios.get(GET_TRACKS_URL);

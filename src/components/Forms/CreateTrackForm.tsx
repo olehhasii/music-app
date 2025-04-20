@@ -4,10 +4,15 @@ import { useState } from 'react';
 import SelectGenres from './SelectGenres';
 import { createTrack } from '../../api/tracks';
 import { TrackFormData } from '../../types';
+import { useTracksStore } from '../../store/TracksStore';
+import { useToastStore } from '../../store/ToastStore';
 
 export default function CreateTrackForm({ onClose }: { onClose: () => void }) {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [genresError, setGenresError] = useState('');
+  const [isLoadingToServer, setIsLoadingToServer] = useState(false);
+  const { fetchTracks } = useTracksStore();
+  const { openToast, setToastMessage } = useToastStore();
 
   const {
     register,
@@ -22,14 +27,25 @@ export default function CreateTrackForm({ onClose }: { onClose: () => void }) {
       return;
     }
     try {
+      setIsLoadingToServer(true);
       const fullData = { ...data, genres: selectedGenres };
-      const res = await createTrack(fullData as TrackFormData);
-
-      if (res.status === 201) {
-        onClose();
+      //const res = await createTrack(fullData as TrackFormData);
+      await createTrack(fullData as TrackFormData);
+      //onResponse({ sent: true, msg: 'Track created!' });
+      setToastMessage('Track created!', false);
+      fetchTracks();
+    } catch (err: any) {
+      if (err.response.status === 409) {
+        //onResponse({ sent: true, msg: 'A track with this title already exists', isError: true });
+        setToastMessage('A track with this title already exists', true);
+      } else {
+        //onResponse({ sent: true, msg: 'Track wasnt create, please try again', isError: true });
+        setToastMessage('Track wasnt create, please try again', true);
       }
-    } catch (err) {
-      console.error('Error creating track:', err);
+    } finally {
+      setIsLoadingToServer(false);
+      onClose();
+      openToast();
     }
   };
 
@@ -93,7 +109,11 @@ export default function CreateTrackForm({ onClose }: { onClose: () => void }) {
           placeholder="Paste url for image cover..."
           error={errors.coverImage?.message as string}
         />
-        <button className="mx-auto w-1/2 rounded-2xl bg-[#2d2d2d] py-2 font-bold" type="submit">
+        <button
+          className="mx-auto w-1/2 rounded-2xl bg-[#2d2d2d] py-2 font-bold"
+          type="submit"
+          disabled={isLoadingToServer}
+        >
           Submit
         </button>
         <button
