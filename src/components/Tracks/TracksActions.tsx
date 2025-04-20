@@ -1,29 +1,59 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal/Modal';
 import { createPortal } from 'react-dom';
-import CreateTrackForm from '../Forms/CreateTrackForm';
+import CreateTrackForm from '../Forms/TrackForm';
 import ToastMessage from '../Forms/ToastMessage';
 import { useToastStore } from '../../store/ToastStore';
+import { useTracksStore } from '../../store/TracksStore';
+import { createTrack } from '../../api/tracks';
+import { FieldValues } from 'react-hook-form';
+import { TrackFormData } from '../../types';
 
 export default function TracksActions() {
   const [isFormOpened, setIsFormOpened] = useState(false);
-  //const [responseStatus, setResponseStatus] = useState({ sent: false, msg: '', isError: false });
-
+  const [isLoadingToServer, setIsLoadingToServer] = useState(false);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [genresError, setGenresError] = useState('');
   const { isToastOpened } = useToastStore();
+
+  const { fetchTracks } = useTracksStore();
+  const { openToast, setToastMessage } = useToastStore();
 
   const handleCloseForm = () => {
     setIsFormOpened(false);
+    setSelectedGenres([]);
   };
 
-  /* const handleCloseToast = () => {
-    setResponseStatus({ sent: false, msg: '', isError: false });
-  }; */
+  const onSubmit = async (data: FieldValues) => {
+    setGenresError('');
+    if (selectedGenres.length === 0) {
+      setGenresError('Please select atleas 1 genre');
+      return;
+    }
+    try {
+      setIsLoadingToServer(true);
+      const fullData = { ...data, genres: selectedGenres };
+      await createTrack(fullData as TrackFormData);
+      setToastMessage('Track created!', false);
+      fetchTracks();
+    } catch (err: any) {
+      if (err.response.status === 409) {
+        setToastMessage('A track with this title already exists', true);
+      } else {
+        setToastMessage('Track wasnt create, please try again', true);
+      }
+    } finally {
+      setIsLoadingToServer(false);
+      handleCloseForm();
+      openToast();
+    }
+  };
 
   return (
     <div className="glass mb-2 w-full px-7 py-2">
       <div>
         <button
-          className="rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold"
+          className="cursor-pointer rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold"
           onClick={() => setIsFormOpened(true)}
         >
           Create Track
@@ -32,7 +62,16 @@ export default function TracksActions() {
       {isFormOpened &&
         createPortal(
           <Modal isOpen={isFormOpened} onClose={handleCloseForm}>
-            <CreateTrackForm onClose={handleCloseForm} />
+            <CreateTrackForm
+              onClose={handleCloseForm}
+              onSetGenresError={setGenresError}
+              isLoadingToServer={isLoadingToServer}
+              onSetSelectedGenres={setSelectedGenres}
+              onSubmit={onSubmit}
+              selectedGenres={selectedGenres}
+              genresError={genresError}
+              imgSrc="/assets/form-createTrack.png"
+            />
           </Modal>,
           document.body
         )}

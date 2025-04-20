@@ -1,60 +1,39 @@
 import { FieldValues, useForm } from 'react-hook-form';
 import InputForm from './InputForm';
-import { useState } from 'react';
+
 import SelectGenres from './SelectGenres';
-import { createTrack } from '../../api/tracks';
-import { TrackFormData } from '../../types';
-import { useTracksStore } from '../../store/TracksStore';
-import { useToastStore } from '../../store/ToastStore';
 
-export default function CreateTrackForm({ onClose }: { onClose: () => void }) {
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [genresError, setGenresError] = useState('');
-  const [isLoadingToServer, setIsLoadingToServer] = useState(false);
-  const { fetchTracks } = useTracksStore();
-  const { openToast, setToastMessage } = useToastStore();
-
+export default function TrackForm({
+  onClose,
+  onSubmit,
+  onSetSelectedGenres,
+  onSetGenresError,
+  genresError,
+  isLoadingToServer,
+  selectedGenres,
+  imgSrc,
+}: {
+  onClose: () => void;
+  onSubmit: (data: FieldValues) => void;
+  onSetSelectedGenres: (genres: string[]) => void;
+  onSetGenresError: (err: string) => void;
+  isLoadingToServer: boolean;
+  selectedGenres: string[];
+  genresError: string;
+  imgSrc: string;
+}) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data: FieldValues) => {
-    setGenresError('');
-    if (selectedGenres.length === 0) {
-      setGenresError('Please select atleas 1 genre');
-      return;
-    }
-    try {
-      setIsLoadingToServer(true);
-      const fullData = { ...data, genres: selectedGenres };
-      //const res = await createTrack(fullData as TrackFormData);
-      await createTrack(fullData as TrackFormData);
-      //onResponse({ sent: true, msg: 'Track created!' });
-      setToastMessage('Track created!', false);
-      fetchTracks();
-    } catch (err: any) {
-      if (err.response.status === 409) {
-        //onResponse({ sent: true, msg: 'A track with this title already exists', isError: true });
-        setToastMessage('A track with this title already exists', true);
-      } else {
-        //onResponse({ sent: true, msg: 'Track wasnt create, please try again', isError: true });
-        setToastMessage('Track wasnt create, please try again', true);
-      }
-    } finally {
-      setIsLoadingToServer(false);
-      onClose();
-      openToast();
-    }
-  };
-
   return (
     <form
       className="scrollable-form relative max-h-[90%] max-w-[400px] overflow-y-auto rounded-2xl bg-[#ddd] pb-3"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <img src="/assets/form-createTrack.png" className="w-[400px] rounded-t-2xl" />
+      <img className="w-[400px] rounded-t-2xl" src={imgSrc} />
       <div className="mt-2 flex flex-col gap-2 px-6">
         <div>
           <InputForm
@@ -91,9 +70,9 @@ export default function CreateTrackForm({ onClose }: { onClose: () => void }) {
           error={errors.album?.message as string}
         />
         <SelectGenres
-          onSelectGenre={setSelectedGenres}
+          onSelectGenre={onSetSelectedGenres}
           selectedGenres={selectedGenres}
-          onSetGenresError={setGenresError}
+          onSetGenresError={onSetGenresError}
           error={genresError}
         />
         <InputForm
