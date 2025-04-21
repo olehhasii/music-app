@@ -4,6 +4,7 @@ import InputForm from './InputForm';
 import SelectGenres from './SelectGenres';
 import { useEffect, useState } from 'react';
 import { getTrackBySlug } from '../../api/tracks';
+import { ClipLoader } from 'react-spinners';
 
 export default function TrackForm({
   onClose,
@@ -60,7 +61,11 @@ export default function TrackForm({
   }, []);
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return (
+      <div data-loading="true">
+        <ClipLoader />
+      </div>
+    );
   }
 
   return (

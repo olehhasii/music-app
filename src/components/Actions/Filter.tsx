@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTracksStore } from '../../store/TracksStore';
 import { getAllGenres, getAllTrackByLimit } from '../../api/tracks';
 import { Track } from '../../types';
+import { ClipLoader } from 'react-spinners';
 
 export default function Filter() {
   const fetchTracks = useTracksStore((state) => state.fetchTracks);
@@ -82,7 +83,11 @@ export default function Filter() {
   }, [paginationData]);
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return (
+      <div data-loading="true">
+        <ClipLoader />
+      </div>
+    );
   }
 
   return (

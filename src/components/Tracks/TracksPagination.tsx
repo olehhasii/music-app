@@ -30,6 +30,10 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
     }
   };
 
+  if (metaData.totalPages === 0) {
+    return null;
+  }
+
   return (
     <div className="mt-4 flex items-center gap-4 text-white">
       <button

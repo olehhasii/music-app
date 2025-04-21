@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { getAllGenres } from '../../api/tracks';
+import { ClipLoader } from 'react-spinners';
 
 export default function SelectGenres({
   onSelectGenre,
@@ -47,7 +48,11 @@ export default function SelectGenres({
   };
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return (
+      <div data-loading="true">
+        <ClipLoader />
+      </div>
+    );
   }
 
   return (
