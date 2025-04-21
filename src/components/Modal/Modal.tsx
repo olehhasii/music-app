@@ -8,7 +8,7 @@ type ModalProps = {
 
 export default function Modal({ children }: ModalProps) {
   return (
-    <div className="backdrop absolute top-0 left-0 h-full w-full overflow-hidden bg-[#00000086]">
+    <div className="backdrop absolute top-0 left-0 h-full w-full overflow-hidden bg-[#00000086] max-md:fixed">
       <div
         onClick={(e) => e.stopPropagation()}
         className="relative flex h-full items-center justify-center"

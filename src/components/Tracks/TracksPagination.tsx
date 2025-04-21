@@ -35,9 +35,12 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
   }
 
   return (
-    <div className="mt-4 flex items-center gap-4 text-white" data-testid="pagination">
+    <div
+      className="mt-4 flex items-center gap-4 text-white max-md:mt-2 max-md:gap-2"
+      data-testid="pagination"
+    >
       <button
-        className="glass-btn cursor-pointer p-3 disabled:cursor-not-allowed"
+        className="glass-btn cursor-pointer p-3 disabled:cursor-not-allowed max-md:p-1"
         disabled={page === 1}
         aria-disabled={page === 1}
         onClick={handlePrevPage}
@@ -45,14 +48,14 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
       >
         <img src="/assets/left.svg" />
       </button>
-      <div className="glass flex min-w-[500px] items-center justify-center gap-8 px-4 py-2">
+      <div className="glass flex items-center justify-center gap-8 px-4 py-2 max-md:min-w-[200px] max-md:gap-4 max-md:py-1 lg:min-w-[400px]">
         {pagesCount.map((num) => {
           const isActive = page === num;
 
           return (
             <button
               key={uuidv4()}
-              className={`${isActive ? 'bg-[#e4e3de] text-black' : ''} flex h-4 w-4 cursor-pointer items-center justify-center rounded-full p-5 text-xl`}
+              className={`${isActive ? 'bg-[#e4e3de] text-black' : ''} flex h-4 w-4 cursor-pointer items-center justify-center rounded-full p-5 text-xl max-md:p-3 max-md:text-base`}
               disabled={isActive}
               aria-disabled={isActive}
               onClick={() => handleSelectPage(num)}
@@ -63,7 +66,7 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
         })}
       </div>
       <button
-        className="glass-btn cursor-pointer rounded-full p-3 disabled:cursor-not-allowed"
+        className="glass-btn cursor-pointer rounded-full p-3 disabled:cursor-not-allowed max-md:p-1"
         disabled={page === metaData.totalPages}
         aria-disabled={page === metaData.totalPages}
         onClick={handleNextPage}

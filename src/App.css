@@ -4,6 +4,12 @@
   padding: 15px 30px;
 }
 
+@media screen and (max-width: 768px) {
+  #root {
+    padding: 10px 15px;
+  }
+}
+
 .glass {
   /* From https://css.glass */
   background: rgba(255, 255, 255, 0.2);

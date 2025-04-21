@@ -18,8 +18,10 @@ export default function TracksSection() {
 
   return (
     <section className="mt-6 flex flex-col items-center">
-      <TracksActions />
-      <TrackList tracks={tracks} isLoading={isLoading} />
+      <div className="w-full">
+        <TracksActions />
+        <TrackList tracks={tracks} isLoading={isLoading} />
+      </div>
       {paginationMetaData && <TracksPagination metaData={paginationMetaData} />}
     </section>
   );

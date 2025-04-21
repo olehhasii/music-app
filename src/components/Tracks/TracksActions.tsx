@@ -10,7 +10,6 @@ import { FieldValues } from 'react-hook-form';
 import { TrackFormData } from '../../types';
 import Sort from '../Actions/Sort';
 import Filter from '../Actions/Filter';
-import Search from '../Actions/Search';
 
 export default function TracksActions() {
   const [isFormOpened, setIsFormOpened] = useState(false);
@@ -61,9 +60,9 @@ export default function TracksActions() {
 
   return (
     <div className="glass mb-2 w-full px-7 py-2">
-      <div className="flex w-full items-center gap-6">
+      <div className="flex w-full items-center gap-6 max-md:flex-wrap max-md:gap-2">
         <button
-          className="cursor-pointer rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold"
+          className="cursor-pointer rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold max-md:px-3 max-md:text-sm"
           onClick={() => setIsFormOpened(true)}
           data-testid="create-track-button"
         >
@@ -71,10 +70,10 @@ export default function TracksActions() {
         </button>
         <Sort />
         <Filter />
-        <Search />
+
         <div>
           <button
-            className="cursor-pointer rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold"
+            className="cursor-pointer rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold max-md:px-3 max-md:text-sm"
             onClick={clearUrlParams}
           >
             Clear all filters and sorting

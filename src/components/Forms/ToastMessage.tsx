@@ -5,7 +5,7 @@ export default function ToastMessage({}: {}) {
 
   return (
     <div
-      className="absolute right-7 bottom-10 flex max-w-[200px] flex-col rounded-4xl bg-white px-5 py-3 text-center opacity-100"
+      className="absolute right-7 bottom-10 flex max-w-[200px] flex-col rounded-4xl bg-white px-5 py-3 text-center opacity-100 max-md:fixed"
       data-testid="toast-container"
     >
       <span

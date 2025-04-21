@@ -49,9 +49,7 @@ export default function Filter() {
   useEffect(() => {
     const fetchAllForFilters = async () => {
       try {
-        console.log(paginationData);
         const { data: allTracks } = await getAllTrackByLimit();
-        console.log(allTracks);
 
         const artists = Array.from(
           new Set(allTracks.map((track: Track) => track.artist).filter(Boolean))
@@ -91,11 +89,11 @@ export default function Filter() {
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 max-md:gap-2">
       <span>Filter By:</span>
       <div className="flex">
         <select
-          className="glass-select block w-[100px] rounded-s-2xl border-r-1 border-black border-s-gray-100 bg-gray-50 p-2.5 text-black placeholder-gray-400 outline-none focus:border-1 focus:border-white"
+          className="glass-select block w-[100px] rounded-s-2xl border-r-1 border-black border-s-gray-100 bg-gray-50 p-2.5 text-black placeholder-gray-400 outline-none focus:border-1 focus:border-white max-md:px-2 max-md:py-1 max-md:text-sm"
           onChange={handleAtristSelected}
           value={selectedArtist}
           data-testid="filter-artist"
@@ -108,7 +106,7 @@ export default function Filter() {
           ))}
         </select>
         <select
-          className="glass-select block w-full rounded-e-2xl border-gray-300 border-s-gray-100 bg-gray-50 p-2.5 text-black placeholder-gray-400 outline-none focus:border-1 focus:border-white"
+          className="glass-select block w-full rounded-e-2xl border-gray-300 border-s-gray-100 bg-gray-50 p-2.5 text-black placeholder-gray-400 outline-none focus:border-1 focus:border-white max-md:px-2 max-md:py-1 max-md:text-sm"
           onChange={handleGenreSelected}
           value={selectedGenre}
           data-testid="filter-genre"

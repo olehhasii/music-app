@@ -72,10 +72,10 @@ export default function TrackItem({ track }: { track: Track }) {
   return (
     <>
       <li
-        className="glass-track flex items-center justify-between px-4 py-2 text-white"
+        className="glass-track flex items-center px-4 py-2 text-white max-md:flex-col max-md:justify-center max-md:px-2 max-md:py-1"
         data-testid={`track-item-${id}`}
       >
-        <div className="flex items-center">
+        <div className="flex items-center max-md:flex-col">
           <img
             src={
               coverImage
@@ -83,41 +83,48 @@ export default function TrackItem({ track }: { track: Track }) {
                 : 'https://upload.wikimedia.org/wikipedia/commons/b/b6/12in-Vinyl-LP-Record-Angle.jpg'
             }
             alt={title}
-            className="max-h-[60px] max-w-[60px] rounded-lg"
+            className="max-h-[60px] max-w-[60px] rounded-lg max-md:max-h-[150px] max-md:max-w-[100%]"
           />
-          <div className="ml-6 flex flex-col">
-            <h3 className="text-xl font-bold" data-testid={`track-item-${id}-title`}>
-              {title}
-            </h3>
-            <span className="text-lg" data-testid={`track-item-${id}-artist`}>
+          <div className="m ml-6 flex flex-col max-md:items-center">
+            <div className="flex gap-2 max-md:mt-4 max-md:flex-col max-md:items-center">
+              <h3
+                className="text-lg font-bold max-md:text-center"
+                data-testid={`track-item-${id}-title`}
+              >
+                {title}
+              </h3>
+              <div className="flex items-center justify-center gap-2 max-md:flex-wrap">
+                {genres.map((genre) => (
+                  <span key={uuidv4()} className="grow-0 rounded-lg bg-black px-2 py-1 text-base">
+                    {genre}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <span className="text-base" data-testid={`track-item-${id}-artist`}>
               {artist}
             </span>
-            {album && <span className="text-lg">Album: {album}</span>}
+            <div>{album && <span className="text-base">Album: {album}</span>}</div>
           </div>
         </div>
-        <div className="flex gap-3">
-          {genres.map((genre) => (
-            <span key={uuidv4()} className="rounded-lg bg-black px-4 py-1 text-xl">
-              {genre}
-            </span>
-          ))}
-        </div>
-        <div className="flex gap-2">
+
+        <div className="ml-auto flex gap-2 max-md:mt-2 max-md:ml-0">
           <button
-            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1"
+            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1 max-md:h-10 max-md:w-10"
             onClick={handleOpenEdit}
             data-testid={`edit-track-${id}`}
           >
             <img src="/assets/edit.svg" className="" />
           </button>
           <button
-            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1"
+            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1 max-md:h-10 max-md:w-10"
             data-testid={`upload-track-${id}`}
           >
             <img src="/assets/upload.svg" />
           </button>
           <button
-            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 p-2"
+            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 p-2 max-md:h-10 max-md:w-10"
             onClick={() => setIsDeleteOpened(true)}
             data-testid={`delete-track-${id}`}
           >
@@ -125,6 +132,7 @@ export default function TrackItem({ track }: { track: Track }) {
           </button>
         </div>
       </li>
+
       {isEditing &&
         createPortal(
           <Modal isOpen={isEditing} onClose={handleCloseEdit}>
@@ -154,7 +162,7 @@ export default function TrackItem({ track }: { track: Track }) {
               >
                 No
               </button>
-              <p className="rounded-3xl bg-[#2d2d2d] px-6 py-5 text-2xl">
+              <p className="rounded-3xl bg-[#2d2d2d] px-6 py-5 text-center text-2xl max-md:px-3 max-md:text-lg">
                 Do you want to delete {title} by {artist}
               </p>
               <button

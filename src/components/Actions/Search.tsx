@@ -24,7 +24,7 @@ export default function Search() {
   return (
     <div>
       <input
-        className="h-13 w-full rounded-xl border-0 bg-white px-5 py-1.5 text-base font-bold text-black opacity-80 outline-none focus:opacity-100"
+        className="h-13 w-full grow-0 rounded-xl border-0 bg-white px-5 py-1.5 text-base font-bold text-black opacity-80 outline-none focus:opacity-100 max-md:h-8 max-md:max-w-[150px]"
         placeholder="Search"
         onChange={(e) => setInputValue(e.target.value)}
         data-testid="search-input"
