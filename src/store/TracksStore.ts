@@ -6,7 +6,7 @@ type TrackStore = {
   tracks: Track[];
   paginationMetaData?: PaginationMeta;
   isLoading: boolean;
-  fetchTracks: () => Promise<void>;
+  fetchTracks: (page?: number) => Promise<void>;
   setTracks: (tracks: Track[]) => void;
 };
 
@@ -17,10 +17,10 @@ export const useTracksStore = create<TrackStore>((set) => ({
 
   setTracks: (tracks) => set({ tracks }),
 
-  fetchTracks: async () => {
+  fetchTracks: async (page: number = 1) => {
     set({ isLoading: true });
     try {
-      const { data, meta } = await getAllTracks();
+      const { data, meta } = await getAllTracks(page);
       set({ tracks: data, paginationMetaData: meta });
     } catch (e) {
       console.error(e);
