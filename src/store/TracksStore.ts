@@ -27,9 +27,11 @@ export const useTracksStore = create<TrackStore>((set, get) => ({
     const searchParams = new URLSearchParams(window.location.search);
     const sort = searchParams.get('sort') || '';
     const order = searchParams.get('order') || 'asc';
+    const artist = searchParams.get('artist') || '';
+    const genre = searchParams.get('genre') || '';
 
     try {
-      const { data, meta } = await getAllTracks(page, sort, order);
+      const { data, meta } = await getAllTracks(page, sort, order, artist, genre);
       set({ tracks: data, paginationMetaData: meta });
     } catch (e) {
       console.error(e);

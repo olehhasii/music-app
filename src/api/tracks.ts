@@ -3,6 +3,7 @@ import {
   CREATE_TRACK_URL,
   DELETE_TRACK_URL,
   GET_GENRES_URL,
+  GET_TRACK_BY_LIMIT_URL,
   GET_TRACK_BY_SLUG_URL,
   GET_TRACKS_URL,
   UPDATE_TRACK_URL,
@@ -12,10 +13,20 @@ import { AllTrackResponse, Track, TrackFormData } from '../types';
 export const getAllTracks = async (
   page: number,
   sort: string,
-  order: string
+  order: string,
+  artist: string,
+  genre: string
 ): Promise<AllTrackResponse> => {
-  const response = await axios.get(GET_TRACKS_URL(page, sort, order));
+  const response = await axios.get(GET_TRACKS_URL(page, sort, order, artist, genre));
   return response.data;
+};
+
+export const getAllTrackByLimit = async () => {
+  const response = await axios.get(GET_TRACKS_URL(1, '', '', '', ''));
+  const { meta } = response.data;
+  const allTrack = await axios.get(GET_TRACK_BY_LIMIT_URL(meta.total));
+
+  return allTrack.data;
 };
 
 export const getAllGenres = async (): Promise<string[]> => {

@@ -9,6 +9,7 @@ import { createTrack } from '../../api/tracks';
 import { FieldValues } from 'react-hook-form';
 import { TrackFormData } from '../../types';
 import Sort from '../Actions/Sort';
+import Filter from '../Actions/Filter';
 
 export default function TracksActions() {
   const [isFormOpened, setIsFormOpened] = useState(false);
@@ -50,6 +51,13 @@ export default function TracksActions() {
     }
   };
 
+  const clearUrlParams = () => {
+    const url = new URL(window.location.href);
+    url.search = '';
+    window.history.replaceState({}, '', url.toString());
+    fetchTracks();
+  };
+
   return (
     <div className="glass mb-2 w-full px-7 py-2">
       <div className="flex w-full gap-6">
@@ -60,6 +68,15 @@ export default function TracksActions() {
           Create Track
         </button>
         <Sort />
+        <Filter />
+        <div>
+          <button
+            className="cursor-pointer rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold"
+            onClick={clearUrlParams}
+          >
+            Clear all filters and sorting
+          </button>
+        </div>
       </div>
       {isFormOpened &&
         createPortal(
