@@ -6,21 +6,30 @@ type TrackStore = {
   tracks: Track[];
   paginationMetaData?: PaginationMeta;
   isLoading: boolean;
-  fetchTracks: (page?: number) => Promise<void>;
+  fetchTracks: () => Promise<void>;
   setTracks: (tracks: Track[]) => void;
+  page: number;
+  setPage: (num: number) => void;
 };
 
-export const useTracksStore = create<TrackStore>((set) => ({
+export const useTracksStore = create<TrackStore>((set, get) => ({
   tracks: [],
   paginationMetaData: undefined,
   isLoading: true,
-
+  page: 1,
   setTracks: (tracks) => set({ tracks }),
-
-  fetchTracks: async (page: number = 1) => {
+  setPage: (number) => set({ page: number }),
+  fetchTracks: async () => {
     set({ isLoading: true });
+
+    const { page } = get(); // ✅ get page from store
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const sort = searchParams.get('sort') || '';
+    const order = searchParams.get('order') || 'asc';
+
     try {
-      const { data, meta } = await getAllTracks(page);
+      const { data, meta } = await getAllTracks(page, sort, order);
       set({ tracks: data, paginationMetaData: meta });
     } catch (e) {
       console.error(e);

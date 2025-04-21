@@ -14,7 +14,7 @@ export default function TracksSection() {
 
   useEffect(() => {
     fetchTracks();
-  }, [fetchTracks]);
+  }, []);
 
   return (
     <section className="mt-6 flex flex-col items-center">

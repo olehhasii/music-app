@@ -1,48 +1,47 @@
-import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { PaginationMeta } from '../../types';
 import { useTracksStore } from '../../store/TracksStore';
 
 export default function TracksPagination({ metaData }: { metaData: PaginationMeta }) {
-  const [activePage, setActivePage] = useState(1);
-
   const pagesCount = Array.from({ length: metaData.totalPages }, (_, i) => i + 1);
 
   const fetchTracks = useTracksStore((state) => state.fetchTracks);
+  const setPage = useTracksStore((state) => state.setPage);
+  const page = useTracksStore((state) => state.page);
 
   const handleSelectPage = (page: number) => {
-    setActivePage(page);
-    fetchTracks(page);
+    setPage(page);
+    fetchTracks();
   };
 
   const handleNextPage = () => {
-    setActivePage((prevPage) => {
-      const newPage = prevPage + 1;
-      fetchTracks(newPage);
-      return newPage;
-    });
+    const nextPage = page + 1;
+    if (nextPage <= metaData.totalPages) {
+      setPage(nextPage);
+      fetchTracks();
+    }
   };
 
   const handlePrevPage = () => {
-    setActivePage((prevPage) => {
-      const newPage = prevPage - 1;
-      fetchTracks(newPage);
-      return newPage;
-    });
+    const prevPage = page - 1;
+    if (prevPage >= 1) {
+      setPage(prevPage);
+      fetchTracks();
+    }
   };
 
   return (
     <div className="mt-4 flex items-center gap-4 text-white">
       <button
         className="glass-btn cursor-pointer p-3 disabled:cursor-not-allowed"
-        disabled={activePage === 1}
+        disabled={page === 1}
         onClick={handlePrevPage}
       >
         <img src="/assets/left.svg" />
       </button>
       <div className="glass flex min-w-[500px] items-center justify-center gap-8 px-4 py-2">
         {pagesCount.map((num) => {
-          const isActive = activePage === num;
+          const isActive = page === num;
 
           return (
             <button
@@ -58,7 +57,7 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
       </div>
       <button
         className="glass-btn cursor-pointer rounded-full p-3 disabled:cursor-not-allowed"
-        disabled={activePage === metaData.totalPages}
+        disabled={page === metaData.totalPages}
         onClick={handleNextPage}
       >
         <img src="/assets/right.svg" />

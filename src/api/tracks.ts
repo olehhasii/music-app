@@ -9,8 +9,12 @@ import {
 } from './config';
 import { AllTrackResponse, Track, TrackFormData } from '../types';
 
-export const getAllTracks = async (page: number): Promise<AllTrackResponse> => {
-  const response = await axios.get(GET_TRACKS_URL(page));
+export const getAllTracks = async (
+  page: number,
+  sort: string,
+  order: string
+): Promise<AllTrackResponse> => {
+  const response = await axios.get(GET_TRACKS_URL(page, sort, order));
   return response.data;
 };
 

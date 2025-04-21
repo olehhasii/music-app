@@ -8,6 +8,7 @@ import { useTracksStore } from '../../store/TracksStore';
 import { createTrack } from '../../api/tracks';
 import { FieldValues } from 'react-hook-form';
 import { TrackFormData } from '../../types';
+import Sort from '../Actions/Sort';
 
 export default function TracksActions() {
   const [isFormOpened, setIsFormOpened] = useState(false);
@@ -51,13 +52,14 @@ export default function TracksActions() {
 
   return (
     <div className="glass mb-2 w-full px-7 py-2">
-      <div>
+      <div className="flex w-full gap-6">
         <button
           className="cursor-pointer rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold"
           onClick={() => setIsFormOpened(true)}
         >
           Create Track
         </button>
+        <Sort />
       </div>
       {isFormOpened &&
         createPortal(
