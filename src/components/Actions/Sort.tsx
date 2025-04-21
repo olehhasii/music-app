@@ -55,6 +55,7 @@ export default function Sort() {
           className="glass-select block w-full rounded-e-2xl border-gray-300 border-s-gray-100 bg-gray-50 p-2.5 text-black placeholder-gray-400 outline-none focus:border-1 focus:border-white"
           onChange={handleSortByChange}
           value={field}
+          data-testid="sort-select"
         >
           <option value="">Default</option>
           <option value="artist">Artist</option>

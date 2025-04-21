@@ -72,6 +72,7 @@ export default function TrackForm({
     <form
       className="scrollable-form relative max-h-[90%] max-w-[400px] overflow-y-auto rounded-2xl bg-[#ddd] pb-3"
       onSubmit={handleSubmit(onSubmit)}
+      data-testid="track-form"
     >
       <img className="w-[400px] rounded-t-2xl" src={imgSrc} />
       <div className="mt-2 flex flex-col gap-2 px-6">
@@ -86,6 +87,8 @@ export default function TrackForm({
             register={register}
             placeholder="Type Track Title..."
             error={errors.title?.message as string}
+            dataTestId="input-title"
+            errorTestid="error-title"
           />
         </div>
         <InputForm
@@ -98,16 +101,19 @@ export default function TrackForm({
           register={register}
           placeholder="Type Track Artist..."
           error={errors.artist?.message as string}
+          dataTestId="input-artist"
+          errorTestid="error-artist"
         />
         <InputForm
           name="album"
           options={{
             maxLength: { value: 30, message: 'Album is too long' },
-            minLength: { value: 2, message: 'Album is too short' },
           }}
           register={register}
           placeholder="Type Track Album..."
           error={errors.album?.message as string}
+          dataTestId="input-album"
+          errorTestid="error-album"
         />
         <SelectGenres
           onSelectGenre={onSetSelectedGenres}
@@ -127,11 +133,15 @@ export default function TrackForm({
           register={register}
           placeholder="Paste url for image cover..."
           error={errors.coverImage?.message as string}
+          dataTestId="input-cover-image"
+          errorTestid="error-cover-image"
         />
         <button
           className="mx-auto w-1/2 rounded-2xl bg-[#2d2d2d] py-2 font-bold"
           type="submit"
           disabled={isLoadingToServer}
+          aria-disabled={isLoadingToServer}
+          data-testid="submit-button"
         >
           Submit
         </button>

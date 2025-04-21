@@ -61,6 +61,7 @@ export default function SelectGenres({
         className="h-14 w-full rounded-xl border-0 bg-white px-5 py-1.5 text-base font-bold text-black opacity-70 outline-none focus:opacity-100"
         onChange={handleSelectGenre}
         ref={selectRef}
+        data-testid="genre-selector"
       >
         <option value="" disabled selected>
           Select one/multiple genres
@@ -93,7 +94,11 @@ export default function SelectGenres({
           })}
         </div>
       )}
-      {error && <span className="ml-2 font-bold text-red-500">{error}</span>}
+      {error && (
+        <span className="ml-2 font-bold text-red-500" data-testid="error-genre">
+          {error}
+        </span>
+      )}
     </div>
   );
 }

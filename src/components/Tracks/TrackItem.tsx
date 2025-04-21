@@ -106,15 +106,20 @@ export default function TrackItem({ track }: { track: Track }) {
           <button
             className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1"
             onClick={handleOpenEdit}
+            data-testid={`edit-track-${id}`}
           >
             <img src="/assets/edit.svg" className="" />
           </button>
-          <button className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1">
+          <button
+            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1"
+            data-testid={`upload-track-${id}`}
+          >
             <img src="/assets/upload.svg" />
           </button>
           <button
             className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 p-2"
             onClick={() => setIsDeleteOpened(true)}
+            data-testid={`delete-track-${id}`}
           >
             <img src="/assets/delete.svg" />
           </button>
@@ -141,10 +146,11 @@ export default function TrackItem({ track }: { track: Track }) {
       {isDeleteOpened &&
         createPortal(
           <Modal isOpen={isDeleteOpened} onClose={() => setIsDeleteOpened(false)}>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4" data-testid="confirm-dialog">
               <button
                 className="h-10 w-10 cursor-pointer rounded-full bg-white text-xl font-bold text-green-400"
                 onClick={() => setIsDeleteOpened(false)}
+                data-testid="cancel-delete"
               >
                 No
               </button>
@@ -154,6 +160,7 @@ export default function TrackItem({ track }: { track: Track }) {
               <button
                 className="h-10 w-10 cursor-pointer rounded-full bg-white text-xl font-bold text-red-400"
                 onClick={handleDeleteTrack}
+                data-testid="confirm-delete"
               >
                 Yes
               </button>

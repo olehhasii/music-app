@@ -98,6 +98,7 @@ export default function Filter() {
           className="glass-select block w-[100px] rounded-s-2xl border-r-1 border-black border-s-gray-100 bg-gray-50 p-2.5 text-black placeholder-gray-400 outline-none focus:border-1 focus:border-white"
           onChange={handleAtristSelected}
           value={selectedArtist}
+          data-testid="filter-artist"
         >
           <option value="">Artist</option>
           {artist?.map((artist) => (
@@ -110,6 +111,7 @@ export default function Filter() {
           className="glass-select block w-full rounded-e-2xl border-gray-300 border-s-gray-100 bg-gray-50 p-2.5 text-black placeholder-gray-400 outline-none focus:border-1 focus:border-white"
           onChange={handleGenreSelected}
           value={selectedGenre}
+          data-testid="filter-genre"
         >
           <option value="">Genre</option>
           {genres.map((genre) => (

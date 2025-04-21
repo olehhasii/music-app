@@ -65,6 +65,7 @@ export default function TracksActions() {
         <button
           className="cursor-pointer rounded-lg bg-[#2d2d2d] px-7 py-2 font-bold"
           onClick={() => setIsFormOpened(true)}
+          data-testid="create-track-button"
         >
           Create Track
         </button>

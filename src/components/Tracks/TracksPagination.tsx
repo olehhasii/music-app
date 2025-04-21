@@ -35,11 +35,13 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
   }
 
   return (
-    <div className="mt-4 flex items-center gap-4 text-white">
+    <div className="mt-4 flex items-center gap-4 text-white" data-testid="pagination">
       <button
         className="glass-btn cursor-pointer p-3 disabled:cursor-not-allowed"
         disabled={page === 1}
+        aria-disabled={page === 1}
         onClick={handlePrevPage}
+        data-testid="pagination-prev"
       >
         <img src="/assets/left.svg" />
       </button>
@@ -52,6 +54,7 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
               key={uuidv4()}
               className={`${isActive ? 'bg-[#e4e3de] text-black' : ''} flex h-4 w-4 cursor-pointer items-center justify-center rounded-full p-5 text-xl`}
               disabled={isActive}
+              aria-disabled={isActive}
               onClick={() => handleSelectPage(num)}
             >
               {num}
@@ -62,7 +65,9 @@ export default function TracksPagination({ metaData }: { metaData: PaginationMet
       <button
         className="glass-btn cursor-pointer rounded-full p-3 disabled:cursor-not-allowed"
         disabled={page === metaData.totalPages}
+        aria-disabled={page === metaData.totalPages}
         onClick={handleNextPage}
+        data-testid="pagination-next"
       >
         <img src="/assets/right.svg" />
       </button>
