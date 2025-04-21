@@ -6,6 +6,7 @@ import {
   GET_TRACK_BY_LIMIT_URL,
   GET_TRACK_BY_SLUG_URL,
   GET_TRACKS_URL,
+  SEARCH_TRACKS_URL,
   UPDATE_TRACK_URL,
 } from './config';
 import { AllTrackResponse, Track, TrackFormData } from '../types';
@@ -27,6 +28,12 @@ export const getAllTrackByLimit = async () => {
   const allTrack = await axios.get(GET_TRACK_BY_LIMIT_URL(meta.total));
 
   return allTrack.data;
+};
+
+export const searchTrack = async (searchString: string) => {
+  const response = await axios.get(SEARCH_TRACKS_URL(searchString));
+
+  return response.data;
 };
 
 export const getAllGenres = async (): Promise<string[]> => {

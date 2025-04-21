@@ -28,6 +28,10 @@ export const GET_TRACK_BY_LIMIT_URL = (limit: number) => {
   return `${API_BASE_URL}/tracks?&limit=${limit}`;
 };
 
+export const SEARCH_TRACKS_URL = (searchString: string) => {
+  return `${API_BASE_URL}/tracks?limit=10000&search=${searchString}`;
+};
+
 export const GET_GENRES_URL = `${API_BASE_URL}/genres`;
 
 export const CREATE_TRACK_URL = `${API_BASE_URL}/tracks`;

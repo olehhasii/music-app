@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { PaginationMeta, Track } from '../types';
-import { getAllTracks } from '../api/tracks';
+import { getAllTracks, searchTrack } from '../api/tracks';
 
 type TrackStore = {
   tracks: Track[];
@@ -10,6 +10,7 @@ type TrackStore = {
   setTracks: (tracks: Track[]) => void;
   page: number;
   setPage: (num: number) => void;
+  searchTracks: (searchString: string) => Promise<void>;
 };
 
 export const useTracksStore = create<TrackStore>((set, get) => ({
@@ -32,6 +33,18 @@ export const useTracksStore = create<TrackStore>((set, get) => ({
 
     try {
       const { data, meta } = await getAllTracks(page, sort, order, artist, genre);
+      set({ tracks: data, paginationMetaData: meta });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+  searchTracks: async (searchString: string) => {
+    set({ isLoading: true });
+
+    try {
+      const { data, meta } = await searchTrack(searchString);
       set({ tracks: data, paginationMetaData: meta });
     } catch (e) {
       console.error(e);
