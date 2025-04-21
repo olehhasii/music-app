@@ -17,6 +17,7 @@ export default function TrackItem({ track }: { track: Track }) {
   const [genresError, setGenresError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [isLoadingToServer, setIsLoadingToServer] = useState(false);
+  const [isDeleteOpened, setIsDeleteOpened] = useState(false);
 
   const { fetchTracks } = useTracksStore();
   const { openToast, setToastMessage } = useToastStore();
@@ -34,6 +35,7 @@ export default function TrackItem({ track }: { track: Track }) {
     try {
       await deleteTrack(id);
       setToastMessage('Track deleted!', false);
+      setIsDeleteOpened(false);
       fetchTracks();
     } catch (error) {
       setToastMessage('Error, please try again', true);
@@ -112,7 +114,7 @@ export default function TrackItem({ track }: { track: Track }) {
           </button>
           <button
             className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 p-2"
-            onClick={handleDeleteTrack}
+            onClick={() => setIsDeleteOpened(true)}
           >
             <img src="/assets/delete.svg" />
           </button>
@@ -133,6 +135,29 @@ export default function TrackItem({ track }: { track: Track }) {
               isEditing={true}
               slug={slug}
             />
+          </Modal>,
+          document.body
+        )}
+      {isDeleteOpened &&
+        createPortal(
+          <Modal isOpen={isDeleteOpened} onClose={() => setIsDeleteOpened(false)}>
+            <div className="flex items-center gap-4">
+              <button
+                className="h-10 w-10 cursor-pointer rounded-full bg-white text-xl font-bold text-green-400"
+                onClick={() => setIsDeleteOpened(false)}
+              >
+                No
+              </button>
+              <p className="rounded-3xl bg-[#2d2d2d] px-6 py-5 text-2xl">
+                Do you want to delete {title} by {artist}
+              </p>
+              <button
+                className="h-10 w-10 cursor-pointer rounded-full bg-white text-xl font-bold text-red-400"
+                onClick={handleDeleteTrack}
+              >
+                Yes
+              </button>
+            </div>
           </Modal>,
           document.body
         )}

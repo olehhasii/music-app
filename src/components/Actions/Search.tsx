@@ -16,9 +16,9 @@ export default function Search() {
         fetchTracks();
       }
       setPage(1);
-    }, 500); // 500ms debounce
+    }, 500);
 
-    return () => clearTimeout(delay); // Cleanup previous timeout
+    return () => clearTimeout(delay);
   }, [inputValue]);
 
   return (

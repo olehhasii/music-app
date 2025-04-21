@@ -48,7 +48,6 @@ export default function Filter() {
   useEffect(() => {
     const fetchAllForFilters = async () => {
       try {
-        const total = paginationData?.total || 1000;
         console.log(paginationData);
         const { data: allTracks } = await getAllTrackByLimit();
         console.log(allTracks);
