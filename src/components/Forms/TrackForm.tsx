@@ -81,7 +81,7 @@ export default function TrackForm({
             name="title"
             options={{
               required: 'Title is required',
-              maxLength: { value: 30, message: 'Title is too long' },
+              maxLength: { value: 50, message: 'Title is too long' },
               minLength: { value: 2, message: 'Title is too short' },
             }}
             register={register}
@@ -95,7 +95,7 @@ export default function TrackForm({
           name="artist"
           options={{
             required: 'Artist is required',
-            maxLength: { value: 30, message: 'Artist is too long' },
+            maxLength: { value: 50, message: 'Artist is too long' },
             minLength: { value: 2, message: 'Artist is too short' },
           }}
           register={register}
@@ -107,7 +107,7 @@ export default function TrackForm({
         <InputForm
           name="album"
           options={{
-            maxLength: { value: 30, message: 'Album is too long' },
+            maxLength: { value: 50, message: 'Album is too long' },
           }}
           register={register}
           placeholder="Type Track Album..."

@@ -55,5 +55,5 @@ export const useTracksStore = create<TrackStore>((set, get) => ({
       set({ isLoading: false });
     }
   },
-  setError: (isError) => set({ error: true }),
+  setError: (isError) => set({ error: isError }),
 }));

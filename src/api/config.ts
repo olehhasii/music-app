@@ -47,3 +47,11 @@ export const UPDATE_TRACK_URL = (id: string) => {
 export const DELETE_TRACK_URL = (id: string) => {
   return `${API_BASE_URL}/tracks/${id}`;
 };
+
+export const UPLOAD_TRACK_URL = (id: string) => {
+  return `${API_BASE_URL}/tracks/${id}/upload`;
+};
+
+export const DELETE_FILE_URL = (id: string) => {
+  return `${API_BASE_URL}/tracks/${id}/file`;
+};

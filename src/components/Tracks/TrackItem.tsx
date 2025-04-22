@@ -9,6 +9,7 @@ import { deleteTrack, updateTrack } from '../../api/tracks';
 import { useTracksStore } from '../../store/TracksStore';
 import { useToastStore } from '../../store/ToastStore';
 import UploadAudio from './UploadAudio';
+import AuidoPlayer from './AuidoPlayer';
 
 export default function TrackItem({ track }: { track: Track }) {
   const { id, title, artist, album, genres, slug, coverImage, audioFile, createdAt, updatedAt } =
@@ -65,7 +66,7 @@ export default function TrackItem({ track }: { track: Track }) {
       }
     } finally {
       setIsLoadingToServer(false);
-      //handleCloseEdit();
+      handleCloseEdit();
       openToast();
     }
   };
@@ -73,41 +74,44 @@ export default function TrackItem({ track }: { track: Track }) {
   return (
     <>
       <li
-        className="glass-track flex items-center px-4 py-2 text-white max-md:flex-col max-md:justify-center max-md:px-2 max-md:py-1"
+        className="glass-track flex items-center px-4 py-2 text-black max-md:flex-col max-md:justify-center max-md:px-2 max-md:py-1"
         data-testid={`track-item-${id}`}
       >
-        <div className="flex items-center max-md:flex-col">
-          <img
-            src={
-              coverImage
-                ? coverImage
-                : 'https://upload.wikimedia.org/wikipedia/commons/b/b6/12in-Vinyl-LP-Record-Angle.jpg'
-            }
-            alt={title}
-            className="max-h-[60px] max-w-[60px] rounded-lg max-md:max-h-[150px] max-md:max-w-[100%]"
-          />
-          <div className="m ml-6 flex flex-col max-md:items-center">
-            <div className="flex gap-2 max-md:mt-4 max-md:flex-col max-md:items-center">
-              <h3
-                className="text-lg font-bold max-md:text-center"
-                data-testid={`track-item-${id}-title`}
-              >
-                {title}
-              </h3>
-              <div className="flex items-center justify-center gap-2 max-md:flex-wrap">
-                {genres.map((genre) => (
-                  <span key={uuidv4()} className="grow-0 rounded-lg bg-black px-2 py-1 text-base">
-                    {genre}
-                  </span>
-                ))}
+        <div>
+          <div className="flex items-center max-md:flex-col">
+            <img
+              src={
+                coverImage
+                  ? coverImage
+                  : 'https://upload.wikimedia.org/wikipedia/commons/b/b6/12in-Vinyl-LP-Record-Angle.jpg'
+              }
+              alt={title}
+              className="max-h-[60px] max-w-[60px] rounded-lg max-md:max-h-[150px] max-md:max-w-[100%]"
+            />
+            <div className="m ml-6 flex flex-col max-md:items-center">
+              <div className="flex gap-2 max-md:mt-4 max-md:flex-col max-md:items-center">
+                <h3
+                  className="text-lg font-bold max-md:text-center"
+                  data-testid={`track-item-${id}-title`}
+                >
+                  {title}
+                </h3>
+                <div className="flex items-center justify-center gap-2 text-white max-md:flex-wrap">
+                  {genres.map((genre) => (
+                    <span key={uuidv4()} className="grow-0 rounded-lg bg-black px-2 py-1 text-base">
+                      {genre}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <span className="text-base" data-testid={`track-item-${id}-artist`}>
-              {artist}
-            </span>
-            <div>{album && <span className="text-base">Album: {album}</span>}</div>
+              <span className="text-base" data-testid={`track-item-${id}-artist`}>
+                {artist}
+              </span>
+              <div>{album && <span className="text-base">Album: {album}</span>}</div>
+            </div>
           </div>
+          {audioFile && <AuidoPlayer audioFile={audioFile} id={id} />}
         </div>
 
         <div className="ml-auto flex gap-2 max-md:mt-2 max-md:ml-0">
@@ -116,7 +120,7 @@ export default function TrackItem({ track }: { track: Track }) {
             onClick={handleOpenEdit}
             data-testid={`edit-track-${id}`}
           >
-            <img src="/assets/edit.svg" className="" />
+            <img src="/assets/edit.svg" className="edit" />
           </button>
           <UploadAudio id={id} />
           <button
@@ -172,7 +176,6 @@ export default function TrackItem({ track }: { track: Track }) {
           </Modal>,
           document.body
         )}
-      {/* /*{isToastOpened && createPortal(<ToastMessage />, document.body)}*/}
     </>
   );
 }

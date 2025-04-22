@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from '../../components/Modal/Modal';
 import { createPortal } from 'react-dom';
 import CreateTrackForm from '../Forms/TrackForm';
-import ToastMessage from '../Forms/ToastMessage';
+
 import { useToastStore } from '../../store/ToastStore';
 import { useTracksStore } from '../../store/TracksStore';
 import { createTrack } from '../../api/tracks';
@@ -16,7 +16,6 @@ export default function TracksActions() {
   const [isLoadingToServer, setIsLoadingToServer] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [genresError, setGenresError] = useState('');
-  const { isToastOpened } = useToastStore();
 
   const { fetchTracks } = useTracksStore();
   const { openToast, setToastMessage } = useToastStore();
@@ -97,7 +96,6 @@ export default function TracksActions() {
           </Modal>,
           document.body
         )}
-      {isToastOpened && createPortal(<ToastMessage />, document.body)}
     </div>
   );
 }
