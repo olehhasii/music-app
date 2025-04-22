@@ -15,7 +15,7 @@ export default function TrackList({ isLoading, tracks }: { isLoading: boolean; t
           <ClipLoader size={80} />
         </div>
       )}
-      {tracks.length === 0 && <NoTracks />}
+      {tracks.length === 0 && !isLoading && <NoTracks />}
       {tracks.length > 0 && (
         <ul className="flex flex-col gap-4">
           {tracks.map((trackItem) => {

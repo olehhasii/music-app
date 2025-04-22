@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import TrackList from './TrackList';
 import TracksPagination from './TracksPagination';
 
@@ -10,11 +10,25 @@ export default function TracksSection() {
   //const [paginationMetaData, setPaginationMetaData] = useState<PaginationMeta>();
   //const [isLoading, setIsLoading] = useState(true);
 
-  const { tracks, paginationMetaData, isLoading, fetchTracks } = useTracksStore();
+  const { tracks, paginationMetaData, isLoading, fetchTracks, error } = useTracksStore();
+  const [failedToLoad, setFailedToLoad] = useState(false);
 
   useEffect(() => {
-    fetchTracks();
+    try {
+      fetchTracks();
+    } catch (error) {
+      setFailedToLoad(true);
+    }
   }, []);
+
+  if (error) {
+    return (
+      <div className="flex h-[40vh] w-full flex-col items-center justify-center">
+        <p className="text-5xl font-bold">Something bad happend.</p>
+        <p className="text-4xl font-bold">Please, try to reload page</p>
+      </div>
+    );
+  }
 
   return (
     <section className="mt-6 flex flex-col items-center">

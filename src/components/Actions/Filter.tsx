@@ -68,6 +68,7 @@ export default function Filter() {
         const data = await getAllGenres();
         setGenres(data);
       } catch (error) {
+        console.log('oops');
         console.log(error);
       } finally {
         setIsLoading(false);

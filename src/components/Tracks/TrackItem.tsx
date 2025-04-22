@@ -8,6 +8,7 @@ import { FieldValues } from 'react-hook-form';
 import { deleteTrack, updateTrack } from '../../api/tracks';
 import { useTracksStore } from '../../store/TracksStore';
 import { useToastStore } from '../../store/ToastStore';
+import UploadAudio from './UploadAudio';
 
 export default function TrackItem({ track }: { track: Track }) {
   const { id, title, artist, album, genres, slug, coverImage, audioFile, createdAt, updatedAt } =
@@ -117,12 +118,7 @@ export default function TrackItem({ track }: { track: Track }) {
           >
             <img src="/assets/edit.svg" className="" />
           </button>
-          <button
-            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1 max-md:h-10 max-md:w-10"
-            data-testid={`upload-track-${id}`}
-          >
-            <img src="/assets/upload.svg" />
-          </button>
+          <UploadAudio id={id} />
           <button
             className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 p-2 max-md:h-10 max-md:w-10"
             onClick={() => setIsDeleteOpened(true)}
