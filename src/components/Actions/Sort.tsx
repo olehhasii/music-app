@@ -36,7 +36,7 @@ export default function Sort() {
     setField(newField);
     updateURL('sort', newField);
     setPage(1);
-    fetchTracks(); // re-fetch with updated query params
+    fetchTracks();
   };
 
   return (

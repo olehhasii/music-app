@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import TrackList from './TrackList';
 import TracksPagination from './TracksPagination';
 
@@ -11,14 +11,9 @@ export default function TracksSection() {
   //const [isLoading, setIsLoading] = useState(true);
 
   const { tracks, paginationMetaData, isLoading, fetchTracks, error } = useTracksStore();
-  const [failedToLoad, setFailedToLoad] = useState(false);
 
   useEffect(() => {
-    try {
-      fetchTracks();
-    } catch (error) {
-      setFailedToLoad(true);
-    }
+    fetchTracks();
   }, []);
 
   if (error) {

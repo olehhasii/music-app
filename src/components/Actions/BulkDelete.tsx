@@ -18,17 +18,15 @@ export default function BulkDelete() {
 
   const handleSelectAll = async () => {
     try {
-      const { data: allTracks } = await getAllTrackByLimit();
+      const { data: allTracks } = await getAllTrackByLimit(); // geting ids not only for the current page, but for all pages
       const ids = allTracks.map((track: Track) => track.id);
-      console.log(ids);
       selectAllTracks(ids);
     } catch (e) {
-      console.error('Failed to fetch all tracks for filters', e);
+      console.error('Failed to fetch', e);
     }
   };
 
   const handleBulkDelete = async () => {
-    console.log(selectedTracks);
     try {
       await axios.post(BULK_DELETE_URL, { ids: selectedTracks });
       setToastMessage('Tracks deleted!', false);
@@ -49,6 +47,7 @@ export default function BulkDelete() {
           <input
             type="checkbox"
             className="h-0 w-0 opacity-0"
+            data-testid="select-mode-toggle"
             onChange={() => {
               toggleBulkDelete();
             }}
@@ -62,6 +61,7 @@ export default function BulkDelete() {
         <button
           className="cursor-pointer rounded-lg bg-[#2d2d2d] px-4 py-2 text-sm font-bold max-md:px-3 max-md:text-sm"
           onClick={handleSelectAll}
+          data-testid="select-all"
         >
           Select All
         </button>
@@ -78,6 +78,7 @@ export default function BulkDelete() {
         <button
           className="cursor-pointer rounded-lg bg-red-800 px-4 py-2 text-sm font-bold max-md:px-3 max-md:text-sm"
           onClick={() => setIsDeleteOpened(true)}
+          data-testid="bulk-delete-button"
         >
           Delete Selected Tracks
         </button>

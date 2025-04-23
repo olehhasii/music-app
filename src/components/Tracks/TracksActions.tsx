@@ -14,11 +14,10 @@ import BulkDelete from '../Actions/BulkDelete';
 
 export default function TracksActions() {
   const [isFormOpened, setIsFormOpened] = useState(false);
-  const [isLoadingToServer, setIsLoadingToServer] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [genresError, setGenresError] = useState('');
 
-  const { fetchTracks } = useTracksStore();
+  const { fetchTracks, isLoading } = useTracksStore();
   const { openToast, setToastMessage } = useToastStore();
 
   const handleCloseForm = () => {
@@ -33,7 +32,6 @@ export default function TracksActions() {
       return;
     }
     try {
-      setIsLoadingToServer(true);
       const fullData = { ...data, genres: selectedGenres };
       await createTrack(fullData as TrackFormData);
       setToastMessage('Track created!', false);
@@ -45,7 +43,6 @@ export default function TracksActions() {
         setToastMessage('Track wasnt create, please try again', true);
       }
     } finally {
-      setIsLoadingToServer(false);
       handleCloseForm();
       openToast();
     }
@@ -88,7 +85,7 @@ export default function TracksActions() {
             <CreateTrackForm
               onClose={handleCloseForm}
               onSetGenresError={setGenresError}
-              isLoadingToServer={isLoadingToServer}
+              isLoadingToServer={isLoading}
               onSetSelectedGenres={setSelectedGenres}
               onSubmit={onSubmit}
               selectedGenres={selectedGenres}

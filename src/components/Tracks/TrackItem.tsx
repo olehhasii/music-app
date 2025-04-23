@@ -150,6 +150,7 @@ export default function TrackItem({ track }: { track: Track }) {
                   id="check"
                   onChange={handleBulkDeleteSelect}
                   checked={selectedTracks.includes(id)}
+                  data-testid={`track-checkbox-${id}`}
                 />
                 <span className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-white opacity-0 peer-checked:opacity-100">
                   <svg
