@@ -55,3 +55,5 @@ export const UPLOAD_TRACK_URL = (id: string) => {
 export const DELETE_FILE_URL = (id: string) => {
   return `${API_BASE_URL}/tracks/${id}/file`;
 };
+
+export const BULK_DELETE_URL = `${API_BASE_URL}/tracks/delete`;

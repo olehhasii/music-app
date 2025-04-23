@@ -48,6 +48,7 @@ export default function Filter() {
 
   useEffect(() => {
     const fetchAllForFilters = async () => {
+      console.log('finaly');
       try {
         const { data: allTracks } = await getAllTrackByLimit();
 
@@ -81,7 +82,7 @@ export default function Filter() {
     }
   }, [paginationData]);
 
-  if (isLoading) {
+  if (isLoading && paginationData?.total) {
     return (
       <div data-loading="true">
         <ClipLoader />

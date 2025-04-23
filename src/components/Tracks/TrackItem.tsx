@@ -10,10 +10,10 @@ import { useTracksStore } from '../../store/TracksStore';
 import { useToastStore } from '../../store/ToastStore';
 import UploadAudio from './UploadAudio';
 import AuidoPlayer from './AuidoPlayer';
+import { useBulkDeleteStore } from '../../store/BuldkDeleteStore';
 
 export default function TrackItem({ track }: { track: Track }) {
-  const { id, title, artist, album, genres, slug, coverImage, audioFile, createdAt, updatedAt } =
-    track;
+  const { id, title, artist, album, genres, slug, coverImage, audioFile } = track;
 
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [genresError, setGenresError] = useState('');
@@ -23,6 +23,7 @@ export default function TrackItem({ track }: { track: Track }) {
 
   const { fetchTracks } = useTracksStore();
   const { openToast, setToastMessage } = useToastStore();
+  const { isBulkDeleteOn, selectedTracks, selectTrack, removeTrack } = useBulkDeleteStore();
 
   const handleOpenEdit = () => {
     setIsEditing(true);
@@ -71,6 +72,16 @@ export default function TrackItem({ track }: { track: Track }) {
     }
   };
 
+  const handleBulkDeleteSelect = () => {
+    if (!selectedTracks.includes(id)) {
+      selectTrack(id);
+    }
+
+    if (selectedTracks.includes(id)) {
+      removeTrack(id);
+    }
+  };
+
   return (
     <>
       <li
@@ -114,7 +125,7 @@ export default function TrackItem({ track }: { track: Track }) {
           {audioFile && <AuidoPlayer audioFile={audioFile} id={id} />}
         </div>
 
-        <div className="ml-auto flex gap-2 max-md:mt-2 max-md:ml-0">
+        <div className="ml-auto flex h-12 gap-2 max-md:mt-2 max-md:ml-0">
           <button
             className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white p-1 max-md:h-10 max-md:w-10"
             onClick={handleOpenEdit}
@@ -130,6 +141,35 @@ export default function TrackItem({ track }: { track: Track }) {
           >
             <img src="/assets/delete.svg" />
           </button>
+          {isBulkDeleteOn && (
+            <div className="inline-flex items-center">
+              <label className="relative flex cursor-pointer items-center">
+                <input
+                  type="checkbox"
+                  className="peer h-8 w-8 cursor-pointer appearance-none rounded border border-white shadow transition-all checked:border-black checked:bg-black hover:shadow-md"
+                  id="check"
+                  onChange={handleBulkDeleteSelect}
+                  checked={selectedTracks.includes(id)}
+                />
+                <span className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-white opacity-0 peer-checked:opacity-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </span>
+              </label>
+            </div>
+          )}
         </div>
       </li>
 

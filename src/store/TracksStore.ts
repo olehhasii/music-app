@@ -26,7 +26,7 @@ export const useTracksStore = create<TrackStore>((set, get) => ({
   fetchTracks: async () => {
     set({ isLoading: true, error: false });
 
-    const { page } = get(); // ✅ get page from store
+    const { page } = get();
 
     const searchParams = new URLSearchParams(window.location.search);
     const sort = searchParams.get('sort') || '';
