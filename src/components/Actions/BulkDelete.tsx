@@ -31,6 +31,7 @@ export default function BulkDelete() {
       await axios.post(BULK_DELETE_URL, { ids: selectedTracks });
       setToastMessage('Tracks deleted!', false);
       setIsDeleteOpened(false);
+      clearSelectedTracks();
       fetchTracks();
     } catch (error) {
       setToastMessage('Error, please try again', true);
